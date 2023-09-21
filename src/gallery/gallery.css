@@ -1,0 +1,51 @@
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  gap: 2rem;
+  cursor: pointer;
+  padding: 1.5rem 0;
+}
+
+.drag-n-drop {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: repeat(auto-fill, 300px);
+  gap: 0.5rem;
+  padding: 0.5rem;
+  align-items: start;
+}
+
+.dnd-group {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 0.5rem;
+}
+
+.dnd-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  color: white;
+  min-height: 150px;
+  border-radius: 5px;
+}
+
+.dnd-item:not(:last-of-type) {
+  margin-bottom: 0.5rem;
+}
+
+.dnd-item * {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.dnd-group h4 {
+  text-align: left;
+  color: grey;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.current;

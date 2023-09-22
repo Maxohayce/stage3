@@ -4,12 +4,23 @@
   align-items: center;
 }
 
+.searchBar {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.searchButton {
+  position: absolute;
+  margin-left: 14rem;
+  background-color: inherit;
+}
+
 .search {
   width: 16rem;
   padding: 0.5rem;
   border-radius: 0.5rem;
   outline: none;
-  margin-top: 2rem;
 }
 
 .dnd-area {

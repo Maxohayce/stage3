@@ -14,12 +14,13 @@ const Gallery = () => {
     const dragNode = useRef();
 
     useEffect(() => {
-        // Update filtered images whenever the list changes
+        // Update filtered images whenever the list or searchInput changes
         if (searchInput.length > 0) {
-            const filtered = list.filter((group) => {
-                return group.items.some((image) => {
-                    return image.imgTag.toLowerCase().includes(searchInput.toLowerCase());
-                });
+            const filtered = list.map((group) => {
+                const filteredItems = group.items.filter((image) =>
+                    image.imgTag.toLowerCase().includes(searchInput.toLowerCase())
+                );
+                return { ...group, items: filteredItems };
             });
             setFilteredImages(filtered);
         } else {
@@ -28,6 +29,7 @@ const Gallery = () => {
     }, [list, searchInput]);
 
     const handleDragEnter = (e, params) => {
+        e.preventDefault();
         console.log('Entering drag...');
         const currentItem = dragItem.current;
         if (e.target !== dragNode.current) {
@@ -74,19 +76,36 @@ const Gallery = () => {
         return 'dnd-item';
     };
 
-    const handleSearch = (e) => {
-        setSearchInput(e.target.value);
+    const handleSearch = () => {
+        // Trigger search only when the search button is clicked
+        if (searchInput.length > 0) {
+            const filtered = list.filter((group) => {
+                return group.items.some((image) => {
+                    return image.imgTag.toLowerCase().includes(searchInput.toLowerCase());
+                });
+            });
+            setFilteredImages(filtered);
+        } else {
+            setFilteredImages([]);
+        }
     };
 
     return (
         <div className="gallery">
-            <input
-                className="search"
-                value={searchInput}
-                onChange={handleSearch}
-                type="text"
-                placeholder="Search for tag"
-            />
+            <div className="searchBar">
+                <input
+                    className="search"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    type="text"
+                    placeholder="Search for tag"
+                />
+                <button className="searchButton" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M14 14L10 10M11.3333 6.66667C11.3333 9.244 9.244 11.3333 6.66667 11.3333C4.08934 11.3333 2 9.244 2 6.66667C2 4.08934 4.08934 2 6.66667 2C9.244 2 11.3333 4.08934 11.3333 6.66667Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                </button>
+            </div>
             <div className="dnd-area">
                 {(searchInput.length === 0 || filteredImages.length === 0) ? (
                     list.map((grp, grp1) => (
@@ -98,6 +117,7 @@ const Gallery = () => {
                                     ? (e) => handleDragEnter(e, { grp1, img1: 0 })
                                     : null
                             }
+                            onTouchStart={(e) => handleDragStart(e, { grp1, img1: 0 })}
                         >
                             <h4>{grp.title}</h4>
                             {grp.items?.map((image, img1) => (
@@ -111,6 +131,8 @@ const Gallery = () => {
                                     }
                                     key={grp.title + image.id}
                                     className={dragging ? getStyles({ grp1, img1 }) : 'dnd-item'}
+                                    onTouchStart={(e) => handleDragStart(e, { grp1, img1 })}
+                                    onTouchEnd={handleDragEnd}
                                 >
                                     <Card src={image.img} title={image.title} id={image.id} />
                                 </div>
@@ -127,6 +149,7 @@ const Gallery = () => {
                                     ? (e) => handleDragEnter(e, { grp1, img1: 0 })
                                     : null
                             }
+                            onTouchStart={(e) => handleDragStart(e, { grp1, img1: 0 })}
                         >
                             <h4>{grp.title}</h4>
                             {grp.items?.map((image, img1) => (
@@ -140,6 +163,8 @@ const Gallery = () => {
                                     }
                                     key={grp.title + image.id}
                                     className={dragging ? getStyles({ grp1, img1 }) : 'dnd-item'}
+                                    onTouchStart={(e) => handleDragStart(e, { grp1, img1 })}
+                                    onTouchEnd={handleDragEnd}
                                 >
                                     <Card src={image.img} title={image.title} id={image.id} />
                                 </div>

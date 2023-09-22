@@ -10,17 +10,22 @@
   align-items: center;
 }
 
+.search {
+  width: 16rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  outline: none;
+}
+
 .searchButton {
   position: absolute;
   margin-left: 14rem;
   background-color: inherit;
 }
 
-.search {
-  width: 16rem;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
+.searchButton:focus {
   outline: none;
+  border: none;
 }
 
 .dnd-area {

@@ -126,7 +126,7 @@ const Gallery = () => {
                                     key={grp.title + image.id}
                                     className={dragging ? getStyles({ grp1, img1 }) : 'dnd-item'}
                                 >
-                                    <Card src={image.img} title={image.title} id={image.id} />
+                                    <Card tag={image.imgTag} src={image.img} title={image.title} id={image.id} />
                                 </div>
                             ))}
                         </div>
@@ -155,7 +155,7 @@ const Gallery = () => {
                                     key={grp.title + image.id}
                                     className={dragging ? getStyles({ grp1, img1 }) : 'dnd-item'}
                                 >
-                                    <Card src={image.img} title={image.title} id={image.id} />
+                                    <Card tag={image.imgTag} src={image.img} title={image.title} id={image.id} />
                                 </div>
                             ))}
                         </div>

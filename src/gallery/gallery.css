@@ -21,6 +21,7 @@
   position: absolute;
   margin-left: 14rem;
   background-color: inherit;
+  z-index: 1;
 }
 
 .searchButton:focus {

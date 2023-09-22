@@ -14,7 +14,6 @@ const Gallery = () => {
     const dragNode = useRef();
 
     const handleSearch = () => {
-        // Trigger search only when the button is clicked
         if (searchInput.length > 0) {
             const filtered = list.map((group) => {
                 const filteredItems = group.items.filter((image) =>
@@ -24,14 +23,15 @@ const Gallery = () => {
             });
             setFilteredImages(filtered);
         } else {
+            // Clear the filtered images when the search input is empty
             setFilteredImages([]);
         }
     };
 
     useEffect(() => {
-        // Update filtered images whenever the list changes
+        // Update filtered images whenever the list or searchInput changes
         handleSearch();
-    }, [list]);
+    }, [list, searchInput]);
 
     const handleDragEnter = (e, params) => {
         e.preventDefault();

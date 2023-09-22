@@ -1,52 +1,31 @@
 import { useState } from "react";
 import "../login/login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
 
 
 const SignUp = () => {
-    const [formData, setFormData] = useState({
-        fullname: "",
-        email: "",
-        username: "",
-        password: "",
-        cpassword: ""
-    });
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
-    const [message, setMessage] = useState("");
+    const submitHandler = async (e) => {
+        e.preventDefault()
 
-    const handleChange = (e) => {
-        setFormData((prev) => {
-            let helper = { ...prev };
-            helper[`${e.target.id}`] = e.target.value;
-            return helper
-        });
-    };
-
-    const submitHandler = (e) => {
-        e.preventDefault();
-        if (formData.cpassword !== formData.password) {
-            setMessage("passwords do not match.");
-            return;
-        } else if (formData.fullname.trim().length === 0 ||
-            formData.email.trim().length === 0 ||
-            formData.username.trim().length === 0 ||
-            formData.password.trim().length === 0 ||
-            formData.cpassword.trim().length === 0) {
-            setMessage("all fields are required.")
-            return
-        } else if (formData.fullname.length < 3) {
-            setMessage("full name shoyld be atleast 3 characters long.");
-            return;
-        }
-        if (formData.username.length < 4) {
-            setMessage("username or email should be atleast 4 characters long");
-            return;
-        } else if (formData.password.length < 8) {
-            setMessage("password should be atleast 8 characters long.")
-            return;
-        }
-        setMessage("");
-        console.log("form data", formData)
+        await createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log(user);
+                navigate("/")
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.error(errorCode, errorMessage);
+                setErrorMessage(errorMessage);
+            });
     }
 
 
@@ -59,43 +38,23 @@ const SignUp = () => {
                 </div>
                 <h3>Welcome!</h3>
                 <input
-                    onChange={handleChange}
-                    value={formData.password}
-                    type={"text"}
-                    id="fullname"
-                    name="fullname"
-                    placeholder="fullname" />
-                <input
-                    onChange={handleChange}
-                    value={formData.password}
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
                     type={"text"}
                     id="email"
                     name="email"
                     placeholder="email" />
                 <input
-                    onChange={handleChange}
-                    value={formData.username}
-                    type={"text"}
-                    id="username"
-                    name="username"
-                    placeholder="username" />
-                <input
-                    onChange={handleChange}
-                    value={formData.password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
                     type={"text"}
                     id="password"
                     name="password"
                     placeholder="password" />
-                <input
-                    onChange={handleChange}
-                    value={formData.password}
-                    type={"text"}
-                    id="cpassword"
-                    name="cpassword"
-                    placeholder="confirm-password" />
-
-                <button type="submit">Sign up</button>
-                <p className="errorMessage">{message}</p>
+                <button onClick={submitHandler} type="submit">Sign up</button>
+                {errorMessage && ( // Conditionally render error message
+                    <p className="errorMessage">{errorMessage}</p>
+                )}
                 <p>Existing User? <Link to={"/"}> Login </Link></p>
             </form>
 

@@ -48,6 +48,7 @@ const Gallery = () => {
     };
 
     const handleDragStart = (e, params) => {
+        e.stopPropagation();
         console.log('drag starting...', params);
         dragItem.current = params;
         dragNode.current = e.target;
@@ -137,7 +138,7 @@ const Gallery = () => {
                                     onDragEnter={
                                         dragging ? (e) => handleDragEnter(e, { grp1, img1 }) : null
                                     }
-                                    key={image.id}
+                                    key={grp.title + image.id}
                                     className={dragging ? getStyles({ grp1, img1 }) : 'dnd-item'}
                                 >
                                     <Card src={image.img} title={image.title} id={image.id} />

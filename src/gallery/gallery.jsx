@@ -1,4 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
+import { signOut } from "firebase/auth";
+import { auth } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 import './gallery.css';
 
 import ImageData from '../constants/imageData';
@@ -23,13 +26,11 @@ const Gallery = () => {
             });
             setFilteredImages(filtered);
         } else {
-            // Clear the filtered images when the search input is empty
             setFilteredImages([]);
         }
     };
 
     useEffect(() => {
-        // Update filtered images whenever the list or searchInput changes
         handleSearch();
     }, [list, searchInput]);
 
@@ -81,6 +82,17 @@ const Gallery = () => {
         return 'dnd-item';
     };
 
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        signOut(auth).then(() => {
+            navigate("/");
+            console.log("Signed out successfully")
+        }).catch((error) => {
+            console.error(error)
+        });
+    }
+
     return (
         <div className="gallery">
             <div className="searchBar">
@@ -100,6 +112,9 @@ const Gallery = () => {
                         <path d="M14 14L10 10M11.3333 6.66667C11.3333 9.244 9.244 11.3333 6.66667 11.3333C4.08934 11.3333 2 9.244 2 6.66667C2 4.08934 4.08934 2 6.66667 2C9.244 2 11.3333 4.08934 11.3333 6.66667Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 </button>
+                <button onClick={handleLogout}>
+                    LogOut
+                </button>
             </div>
             <div className="dnd-area">
                 {(searchInput.length === 0 || filteredImages.length === 0) ? (
@@ -113,7 +128,7 @@ const Gallery = () => {
                                     : null
                             }
                         >
-                            <h4>{grp.title}</h4>
+                            {/* <h4>{grp.title}</h4> */}
                             {grp.items?.map((image, img1) => (
                                 <div
                                     draggable
@@ -142,7 +157,7 @@ const Gallery = () => {
                                     : null
                             }
                         >
-                            <h4>{grp.title}</h4>
+                            {/* <h4>{grp.title}</h4> */}
                             {grp.items?.map((image, img1) => (
                                 <div
                                     draggable

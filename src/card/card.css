@@ -19,6 +19,6 @@
   background-color: black;
   border-radius: 0.5rem;
   padding: 0.2rem;
-  align-self: center;
-  text-transform: lowercase;
+  /* align-self: center; */
+  /* text-transform: lowercase; */
 }

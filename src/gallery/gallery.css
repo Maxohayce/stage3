@@ -8,6 +8,9 @@
   margin-top: 2rem;
   display: flex;
   align-items: center;
+  width: 22rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .search {
@@ -19,9 +22,11 @@
 
 .searchButton {
   position: absolute;
-  margin-left: 14rem;
-  background-color: inherit;
+  margin-left: 15rem;
+  background-color: transparent;
+  padding: 0;
   z-index: 1;
+  border: none;
 }
 
 .searchButton:focus {
